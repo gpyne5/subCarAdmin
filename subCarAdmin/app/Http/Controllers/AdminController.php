@@ -24,9 +24,15 @@ class AdminController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Request $request)
     {
-        //
+        $this->validate($request, Admin::$rules);
+        $admin = new Admin;
+        $form = $request->all();
+        unset($form['_token']);
+        $admin->timestamps = false;
+        $admin->fill($form)->save();
+        return redirect('../top/index.html');
     }
 
     /**
@@ -57,9 +63,19 @@ class AdminController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit($id, Request $request)
     {
-        //
+        $timestamp = strtotime($request->dateStart);
+        //date 'j' は1桁もしくは2桁の日にしてくれる
+        $dateStart = '_' . date('j', $timestamp);
+        $target = Admin::find($id);
+        //timestampsをfalseにしないとcreated_atのColumnがないよとエラーになる
+        $target->timestamps = false;
+        // $dateStart ...  '_' + int のカラム名
+        $target->$dateStart = $request->customerName;
+        
+        $target->save();
+        
     }
 
     /**
