@@ -69,7 +69,6 @@ document.addEventListener('DOMContentLoaded', function(){
         if(xhr.readyState === 4){
             if(xhr.status === 200){
                 let data = JSON.parse(xhr.responseText);
-                console.log(data);
                 let cars = data[0];
                 let form = document.getElementById('form');
                 for(let i=0,len=cars.length;i<len;i++){
