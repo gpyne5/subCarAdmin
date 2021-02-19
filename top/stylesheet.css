@@ -1,0 +1,4 @@
+th {width: 50px; border:1px solid gray;overflow-wrap : break-word;text-align: center;}
+td {width: 50px; border:1px solid gray;overflow-wrap : break-word;text-align: center;}
+tr {}
+table {table-layout:fixed;width: 100%; }

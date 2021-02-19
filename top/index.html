@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="stylesheet.css">
+    <title>代車管理アプリ</title>
+</head>
+<body>
+    <div class="current-month" id="current-month"></div>
+
+    <div class="entry-form" id="entry-form">
+        <form id="form" method="GET">
+            <br>
+            <label for="customer-name">お客様名：<input type="text" name="customer-name"></label>
+            <select name="sales-name">
+                <option name="孫悟空">孫悟空</option>
+                <option name="孫悟飯">孫悟飯</option>
+                <option name="孫悟天">孫悟天</option>
+                <option name="ベジータ">ベジータ</option>
+                <option name="桃白白">桃白白</option>
+            </select>
+            <br>
+            <input type="date" name="date-start">~<input type="date" name="date-end">
+            <input type="submit" id="submit">
+        </form>
+    </div>
+
+
+    <hr>
+
+
+    <table>
+        <div id="table"></div>
+    </table>
+
+    
+    <script type="text/javascript" src="ajax.js"></script>
+</body>
+</html>
