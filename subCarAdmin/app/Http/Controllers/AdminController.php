@@ -54,7 +54,8 @@ class AdminController extends Controller
      */
     public function show($id)
     {
-        //
+        $admin = Admin::find($id);
+        $admin->delete();
     }
 
     /**
