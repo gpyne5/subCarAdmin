@@ -53,10 +53,11 @@ document.addEventListener('DOMContentLoaded', function(){
         
         let customerName = document.getElementById('customerName');
         let dateStart = document.getElementById('dateStart');
+        let dateEnd = document.getElementById('dateEnd');
         //admin/{id}/edit/? で更新できる
         xhr.open('GET', '../admin/' + encodeURIComponent(selectedCar(id)) + '/edit/?customerName='
             + encodeURIComponent(customerName.value) + '&dateStart=' +
-            encodeURIComponent(dateStart.value), true);
+            encodeURIComponent(dateStart.value) + '&dateEnd=' + encodeURIComponent(dateEnd.value), true);
         xhr.send(null);
     }, false);
 

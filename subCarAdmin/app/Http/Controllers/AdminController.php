@@ -66,17 +66,49 @@ class AdminController extends Controller
      */
     public function edit($id, Request $request)
     {
-        $timestamp = strtotime($request->dateStart);
-        //date 'j' は1桁もしくは2桁の日にしてくれる
-        $dateStart = '_' . date('j', $timestamp);
+        function createTimestamp($date){
+            $timestamp = strtotime($date);
+            return $timestamp;
+        };
+        /**
+         * date 'j' は1桁もしくは2桁の日にしてくれる
+         * 開始日と終了日をセット。もし終了日が入力されていなければ開始日と同じにする
+         */ 
+        $start = date('j', createTimestamp($request->dateStart));
+        if(isset($request->dateEnd)){
+            $end = date('j', createTimestamp($request->dateEnd));
+        } else {
+            $end = date('j', createTimestamp($request->dateStart));
+        }
+
+        /**
+         * @return array $result
+         * '_' + 日
+         */
+        function findTarget($start, $end){
+            $targetDays = ((int) $end - (int) $start) + 1;
+            $result = [];
+            if($targetDays === 1){
+                return '_' . $start;
+            };
+            for($i = 0; $i < $targetDays; $i ++){
+                $day = (int) $start + $i;
+                $resultDay = '_' . $day;
+                $result[] = $resultDay;
+            };
+            return $result;
+        }
+        $period = findTarget($start, $end);
+        
         $target = Admin::find($id);
         //timestampsをfalseにしないとcreated_atのColumnがないよとエラーになる
         $target->timestamps = false;
-        // $dateStart ...  '_' + int のカラム名
-        $target->$dateStart = $request->customerName;
-        
+
+        foreach((array) $period as $day){
+            $target->$day = $request->customerName;
+            echo $target->$day;
+        }
         $target->save();
-        
     }
 
     /**
