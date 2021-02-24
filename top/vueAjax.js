@@ -1,5 +1,4 @@
 
-
 let xhr = new XMLHttpRequest();
 xhr.onreadystatechange = function(){
     if(xhr.readyState === 4){
@@ -12,6 +11,7 @@ xhr.onreadystatechange = function(){
                 data: {
                     cars: data[0],
                     date: new Date(),
+                    current: new Date().getMonth() + 1,
                     days: function(date) {
                         date.setMonth(date.getMonth() + 1);
                         date.setDate(0);
@@ -30,45 +30,103 @@ xhr.onreadystatechange = function(){
                                 cars: this.id,
                                 makeCarTable: function(car) {
                                     let result = [];
-                                    for(let i=1;i<this.days;i++){
+                                    for(let i=1, len=this.days+1;i<len;i++){
                                         result.push(car['_' + i.toString()]);
                                     }
                                     return result;
                                 }
                             };
                         }
+                    },
+                    'reservation-zone': {
+                        props: ['cars'],
+                        template: `<div>
+                            <form id="form" method="GET">
+                                <select v-model="selectCar">
+                                    <option v-for="(car, key) in carInfo(this.cars)" v-bind:value="key">{{ car }}</option>
+                                </select>
+                                <br>
+                                <label for="customerName">お客様名：<input type="text" name="customerName" v-model="customerName"></label>
+                                
+                                <br>
+                                <input type="date" v-model="dateStart" id="dateStart">~<input type="date" v-model="dateEnd" id="dateEnd">
+                                <input type="submit" id="submit" v-on:click="onclick">
+                            </form>
+                            </div>`,
+                        data: function() {
+                            return {
+                                carInfo: function(cars) {
+                                    let result = {};
+                                    for(let i=0,len=cars.length;i<len;i++){
+                                        result[cars[i].id] = (cars[i].car_name + ' ' + cars[i].car_number);
+                                    }
+                                    return result;
+                                },
+                                selectCar: '',
+                                customerName: '',
+                                dateStart: 0,
+                                dateEnd: 0,
+                            };
+                        },
+                        methods: {
+                            onclick: function() {
+                                //admin/{id}/edit/? で更新できる
+                                xhr.open('GET', '../admin/' + encodeURIComponent(this.selectCar) + '/edit/?customerName='
+                                    + encodeURIComponent(this.customerName) + '&dateStart=' +
+                                    encodeURIComponent(this.dateStart) + '&dateEnd=' + encodeURIComponent(this.dateEnd), true);
+                                xhr.send(null);
+                            }
+                        }
+                    
+                    },
+                    'cars-create': {
+                        template: `<div>
+                        <form method="GET">
+                            車種名：<input name="car_name" v-model="carName" type="text"><br>
+                            ナンバー（4桁）：<input name="car_number" v-model="carNumber" type="number"><br>
+                            <input type="submit" id="submit" v-on:click="onclick">
+                        </form>
+                        {{carName}}
+                        </div>`,
+                        data: function() {
+                            return {
+                                carName: '',
+                                carNumber: null,
+                            };
+                        },
+                        methods: {
+                            onclick: function() {
+                                xhr.open('GET', '../admin/create/?car_name=' + encodeURIComponent(this.carName)
+                                    + '&car_number=' + encodeURIComponent(this.carNumber), true);
+                                xhr.send(null);
+                            }
+                        }
+                        
+                    },
+                    'car-delete': {
+                        props: ['cars'],
+                        template: `<div>
+                            <form method="GET">
+                                <select v-model="deleteCar">
+                                    <option v-for="car in cars" v-bind:value="car.id">{{ car.car_name + ' ' + car.car_number }}</option>
+                                </select>
+                                <input type="submit" value="削除" v-on:click="onclick">
+                            </form>
+                        </div>`,
+                        data: function() {
+                            return {
+                                deleteCar: ''
+                            }
+                        },
+                        methods: {
+                            onclick: function() {
+                                xhr.open('GET', '../admin/' + encodeURIComponent(this.deleteCar), true);
+                                xhr.send(null);
+                            }
+                        }
                     }
                 }
-            });
-
-            /*
-            for(let i=0,len=cars.length;i<len;i++){
-                let carInfoSelect = document.createTextNode(cars[i].car_name + ' ' + cars[i].car_number); //Select用
-                let carInfoTable = document.createTextNode(cars[i].car_name + '\n' + cars[i].car_number); //Tableインデックス用
-                let tr = document.createElement('tr');
-                var th = document.createElement('th');
-                th.appendChild(carInfoTable);
-                tr.appendChild(th)
-                */
-
-                
-                    /**
-                     * 車一台一台の毎日の予約を抜き出している
-                     
-                for(let j=1,days=daysCount(date)+1;j<days;j++){ //　オーバーヘッドにならないよう最初に一度だけ関数を呼び出す
-                    let reservation = cars[i]['_' + j.toString()];
-                    if(reservation === null){
-                        var reservationNode = document.createTextNode(' ');
-                    } else {
-                        var reservationNode = document.createTextNode(reservation);
-                    }
-                    let td = document.createElement('td');
-                    td.appendChild(reservationNode);
-                    tr.appendChild(td);
-                } 
-                }
-                */
-            
+            });    
                 
         } else {
             console.log('接続に失敗');
@@ -80,53 +138,3 @@ xhr.onreadystatechange = function(){
 xhr.open('GET', '../admin', true);
 xhr.send(null);
 
-
-
-
-/*
-    let date = new Date();
-    function daysCount(date){
-        date.setMonth(date.getMonth() + 1);
-        date.setDate(0);
-        return date.getDate();
-    }
-    
-    
-    // 日にちColumnの表示
-
-    for(let i = 1, len = daysCount(date) + 1; i < len; i++){
-        let th = document.createElement('th');
-        let day = document.createTextNode(i);
-        th.appendChild(day);
-        tr.appendChild(th);
-    }
-    
-    let entryForm = document.getElementById('entry-form');
-    let selectCarInfo = document.createElement('select');
-    selectCarInfo.id = 'id';
-    
-    selectCarInfo.name = 'id'; //optionのvalue値
-    document.getElementById('submit').addEventListener('click', function(){
-
-        // Select内のOptionで選択されている値を取得する方法。.optionsプロパティ。
-        //forで回して.selectedプロパティがtrueになっているものが選択された値。
-        let id = document.getElementById('id').options;
-        function selectedCar(id){
-            for(let i=0,len=id.length;i<len;i++){
-                let m = id.item(i);
-                if(m.selected){
-                    return m.value;
-                }
-            }
-        };
-        
-        let customerName = document.getElementById('customerName');
-        let dateStart = document.getElementById('dateStart');
-        let dateEnd = document.getElementById('dateEnd');
-        //admin/{id}/edit/? で更新できる
-        xhr.open('GET', '../admin/' + encodeURIComponent(selectedCar(id)) + '/edit/?customerName='
-            + encodeURIComponent(customerName.value) + '&dateStart=' +
-            encodeURIComponent(dateStart.value) + '&dateEnd=' + encodeURIComponent(dateEnd.value), true);
-        xhr.send(null);
-    }, false);
-*/

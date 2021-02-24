@@ -7,30 +7,17 @@
     <title>代車管理アプリ</title>
 </head>
 <body>
-    <div class="current-month" id="current-month"></div>
-
-    <div class="form" id="entry-form">
-        <form id="form" method="GET">
-            <br>
-            <label for="customerName">お客様名：<input type="text" name="customerName" id="customerName"></label>
-            
-            <br>
-            <input type="date" name="dateStart" id="dateStart">~<input type="date" name="dateEnd" id="dateEnd">
-            <input type="submit" id="submit">
-        </form>
-    </div>
-    <div class="create">
-        <a href="create.html">代車管理</a>
-    </div>
-
-
-    <hr>
-
     <div id="app">
-        <table>
-            {{ cars }}
-            <car-table v-bind:id="cars" v-bind:days="days(date)"></car-table>
-        </table>
+        <h2>{{ current }}月</h2>
+        <reservation-zone v-bind:cars="cars"></reservation-zone>
+
+        <cars-create></cars-create>
+        <car-delete v-bind:cars='cars'></car-delete>
+        <hr>
+        
+            <table>
+                <car-table v-bind:id="cars" v-bind:days="days(date)"></car-table>
+            </table>
     </div>
 
     
