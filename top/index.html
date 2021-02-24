@@ -3,24 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <link rel="stylesheet" href="stylesheet.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
     <title>代車管理アプリ</title>
 </head>
 <body>
     <div class="current-month" id="current-month"></div>
 
-    <div class="entry-form" id="entry-form">
+    <div class="form" id="entry-form">
         <form id="form" method="GET">
             <br>
             <label for="customerName">お客様名：<input type="text" name="customerName" id="customerName"></label>
-            <!--
-            <select name="sales-name">
-                <option name="孫悟空">孫悟空</option>
-                <option name="孫悟飯">孫悟飯</option>
-                <option name="孫悟天">孫悟天</option>
-                <option name="ベジータ">ベジータ</option>
-                <option name="桃白白">桃白白</option>
-            </select>
-            -->
+            
             <br>
             <input type="date" name="dateStart" id="dateStart">~<input type="date" name="dateEnd" id="dateEnd">
             <input type="submit" id="submit">
@@ -33,12 +26,15 @@
 
     <hr>
 
-
-    <table>
-        <div id="table"></div>
-    </table>
+    <div id="app">
+        <table>
+            {{ cars }}
+            <car-table v-bind:id="cars" v-bind:days="days(date)"></car-table>
+        </table>
+    </div>
 
     
-    <script type="text/javascript" src="ajax.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+    <script type="text/javascript" src="vueAjax.js"></script>
 </body>
 </html>
