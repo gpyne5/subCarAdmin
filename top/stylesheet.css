@@ -61,3 +61,17 @@ padding: 5px;
 .selected{
     background-color: aquamarine;
 }
+
+.post-form {
+    height: 80px;
+    width: 250px;
+    background-color: rgba(92, 133, 245, 0.5);
+    border: solid 1px blue;
+}
+.form-position {
+    position: relative;
+    padding: 10px;
+}
+.selected-day {
+    padding: 8px;
+}

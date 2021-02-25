@@ -5,11 +5,12 @@ xhr.onreadystatechange = function(){
         if(xhr.status === 200){
             console.log('接続成功');
             let data = JSON.parse(xhr.responseText);
-
+            console.log(data);
             new Vue({
                 el: '#app',
                 data: {
                     cars: data[0],
+                    cale: data[1],
                     date: new Date(),
                     current: new Date().getMonth() + 1,
                     days: function(date) {
@@ -20,52 +21,77 @@ xhr.onreadystatechange = function(){
                 },
                 components: {
                     'car-table': {
-                        props: ['id', 'days'],
+                        props: ['id', 'days', 'cale'],
                         template: `<div>
                             <div>
                                 <tr><th></th><th v-for="i in days">{{ i }}</th></tr>
-                                <tr v-for="car in this.cars"><th>{{ car.car_name }}</th>
-                                <td v-for="(reservation, key) in makeCarTable(car)" v-on:mousedown="mousedown" v-bind:style="[ selected ]" v-bind:id="key" v-bind:key="key">{{ reservation }}</td></tr>
+                                <tr v-for="car in this.cars" v-bind:id="car.id"><th>{{ car.car_name }}</th>
+                                <td v-for="(reservation, key) in makeCalender(car)" v-on:mousedown="mousedown" v-bind:style="{ backgroundColor: 'white' }" v-bind:id="key" v-bind:key="key">{{ reservation }}</td></tr>
                                 {{ onClick }}<br>{{ keys }}
                             </div>
-                            <div v-show="show">
+                            <div class="post-form" v-show="show"　v-bind:style="[pos]">
                                 <form method="GET">
+                                <div  class="form-position">
+                                    <span class="selected-day">{{keys[0]}}日 〜 {{keys[1]}}日</span>
                                     <input type="text" v-model="customerName">
                                     <input type="submit" v-on:click="click" value="予約">
+                                </div>
                                 </form>
                             </div>
                         </div>`,
                         data: function() {
                             return {
                                 cars: this.id,
+                                calender: this.cale,
                                 reservation: '',
                                 customerName: '',
+                                selectedCarId: null,
+                                date: new Date().toISOString().slice(0,7).replace('-','_'), // 2021_02 のような文字列
                                 keys: [],
                                 onClick: {},
                                 show: false,
-                                selected: { backgroundColor: 'white' },
-                                makeCarTable: function(car) {
+                                selectCell: false,
+                                pos: {
+                                    left: 0,
+                                    top: 0
+                                  },
+                                makeCalender: function(car) {
                                     let result = {};
-                                    for(let i=1, len=this.days+1;i<len;i++){
-                                        result[i] = car['_' + i.toString()];
+                                    //いずれif(2021-02 === current)みたいな処理を追加
+                                    for(let j=0,len=this.calender.length;j<len;j++){
+                                        console.log(car.id);
+                                        if(this.calender[j].car_id === car.id){
+                                            for(let i=1,len=this.days+1;i<len;i++){
+                                                result[i] = this.calender[j]['_' + i.toString()];
+                                            }
+                                            return result;
+                                        }
                                     }
-                                    return result;
                                 }
+                                    
                             };
                         },
                         methods: {
                             mousedown: function(e) {
+                                this.selectedCarId = e.path[1].id;
                                 this.onClick[Number(e.target.id)] = e.target.outerText;
                                 this.keys = Object.keys(this.onClick);
                                 if(this.keys.length === 2){
                                     this.keys.sort();
                                     this.show = true;
-                                    // form送信した後keysの中身をdeleteすること
+                                    this.pos = {
+                                        top: e.pageY + 'px',
+                                        left: e.pageX + 'px',
+                                        position: 'absolute'
+                                    };
                                 }
-                                this.selected = { backgroundColor: 'aquamarine' };
                             },
                             click: function() {
-                                //
+                                //admin/{id}/edit/? で更新できる
+                                xhr.open('GET', '../admin/' + encodeURIComponent(this.selectedCarId) + '/edit/?customerName='
+                                    + encodeURIComponent(this.customerName) + '&currentMonth=' + encodeURIComponent(this.date) + '&dateStart=' +
+                                    encodeURIComponent(this.keys[0]) + '&dateEnd=' + encodeURIComponent(this.keys[1]), true);
+                                xhr.send(null);
                             }
                         }
                         

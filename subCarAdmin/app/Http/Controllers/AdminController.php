@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Admin;
+use App\Models\Calender;
+use App\Models\Car;
 
 class AdminController extends Controller
 {
@@ -14,7 +16,9 @@ class AdminController extends Controller
      */
     public function index()
     {
-        $items = [Admin::all()];
+        $cars = Car::all();
+        $calender = Calender::all();
+        $items = [$cars, $calender];
         return $items;
 
     }
@@ -26,13 +30,22 @@ class AdminController extends Controller
      */
     public function create(Request $request)
     {
-        $this->validate($request, Admin::$rules);
-        $admin = new Admin;
+        $this->validate($request, Car::$rules);
+        $car = new Car;
+        $calender = new Calender;
         $form = $request->all();
         unset($form['_token']);
-        $admin->timestamps = false;
-        $admin->fill($form)->save();
-        return redirect('../top/index.html');
+        //$admin->timestamps = false;
+        $car->timestamps = false;
+        $car->fill($form)->save();
+        $current = date('Y-m'); //要修正　$requestからcurrentDateを受け取って作成
+        $calenderSet = [
+            'car_id' => $car->id,
+            'y_m' => $current
+        ];
+        $calender->timestamps = false;
+        $calender->fill($calenderSet)->save();
+        
     }
 
     /**
@@ -54,8 +67,8 @@ class AdminController extends Controller
      */
     public function show($id)
     {
-        $admin = Admin::find($id);
-        $admin->delete();
+        $car = Car::find($id)->delete();
+        $calender = Calender::where('car_id',$id)->get()->each->delete();
     }
 
     /**
@@ -93,7 +106,9 @@ class AdminController extends Controller
         }
         $period = findTarget($start, $end);
         
-        $target = Admin::find($id);
+        // car_idとy_mが一致するテーブルを検索
+        $target = Calender::where('car_id',$id)->where('y_m', $request->currentMonth)->first();
+
         //timestampsをfalseにしないとcreated_atのColumnがないよとエラーになる
         $target->timestamps = false;
 
@@ -102,6 +117,7 @@ class AdminController extends Controller
             echo $target->$day;
         }
         $target->save();
+        return $target;
     }
 
     /**
