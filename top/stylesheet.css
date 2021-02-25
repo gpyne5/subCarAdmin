@@ -2,3 +2,62 @@ th {width: 50px; border-bottom:1px solid gray;border-left:1px solid gray; overfl
 td {width: 50px; border-bottom:1px solid gray;border-left:1px solid gray;overflow-wrap : break-word;text-align: center;}
 tr {}
 table {table-layout:fixed;width: 100%; }
+
+.cxt {
+position: absolute;
+z-index: 99;
+padding: 5px;
+border-width: 1px;
+border-style: solid;
+}
+
+.cxt li {
+padding: 5px 15px 5px 15px;
+list-style: none;
+border-bottom-color: #ccc;
+border-bottom-width: 1px;
+border-bottom-style: dotted;
+color: #000;
+cursor: pointer;
+}
+
+.cxt a {
+color: #000;
+text-decoration: none;
+}
+
+.cxt li.sep {
+border-bottom-width: 2px;
+border-bottom-style: solid;
+}
+
+.create {
+color:white;
+padding: 10px;
+position: relative;
+border: solid 1px #000;
+height: 180px;
+width: 200px;
+background-color: rgba(0, 0, 0, 0.5);
+}
+.delete {
+position: relative;
+padding: 10px;
+border: solid 1px #000;
+height: 80px;
+width: 150px;
+background-color: rgba(0, 0, 0, 0.5);
+}
+.car-delete {
+padding: 5px;
+}
+
+.cars-create {
+padding: 5px;
+}
+.submit {
+    margin:5px;
+}
+.selected{
+    background-color: aquamarine;
+}

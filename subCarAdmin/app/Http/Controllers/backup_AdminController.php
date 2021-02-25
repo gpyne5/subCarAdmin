@@ -66,12 +66,19 @@ class AdminController extends Controller
      */
     public function edit($id, Request $request)
     {
-        
-        $start = $request->dateStart;
+        function createTimestamp($date){
+            $timestamp = strtotime($date);
+            return $timestamp;
+        };
+        /**
+         * date 'j' は1桁もしくは2桁の日にしてくれる
+         * 開始日と終了日をセット。もし終了日が入力されていなければ開始日と同じにする
+         */ 
+        $start = date('j', createTimestamp($request->dateStart));
         if(isset($request->dateEnd)){
-            $end = $request->dateEnd;
+            $end = date('j', createTimestamp($request->dateEnd));
         } else {
-            $end = $request->dateStart;
+            $end = date('j', createTimestamp($request->dateStart));
         }
 
         /**
@@ -82,7 +89,7 @@ class AdminController extends Controller
             $targetDays = ((int) $end - (int) $start) + 1;
             $result = [];
             if($targetDays === 1){
-                return array('_' . $start);
+                return '_' . $start;
             };
             for($i = 0; $i < $targetDays; $i ++){
                 $day = (int) $start + $i;
