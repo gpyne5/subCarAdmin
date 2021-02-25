@@ -5,7 +5,6 @@ xhr.onreadystatechange = function(){
         if(xhr.status === 200){
             console.log('接続成功');
             let data = JSON.parse(xhr.responseText);
-            console.log(data);
             new Vue({
                 el: '#app',
                 data: {
@@ -46,7 +45,7 @@ xhr.onreadystatechange = function(){
                                 reservation: '',
                                 customerName: '',
                                 selectedCarId: null,
-                                date: new Date().toISOString().slice(0,7).replace('-','_'), // 2021_02 のような文字列
+                                date: new Date().toISOString().slice(0,7), // 2021-02 のような文字列
                                 keys: [],
                                 onClick: {},
                                 show: false,
@@ -59,7 +58,7 @@ xhr.onreadystatechange = function(){
                                     let result = {};
                                     //いずれif(2021-02 === current)みたいな処理を追加
                                     for(let j=0,len=this.calender.length;j<len;j++){
-                                        console.log(car.id);
+                                        //console.log(car.id);
                                         if(this.calender[j].car_id === car.id){
                                             for(let i=1,len=this.days+1;i<len;i++){
                                                 result[i] = this.calender[j]['_' + i.toString()];
@@ -73,6 +72,8 @@ xhr.onreadystatechange = function(){
                         },
                         methods: {
                             mousedown: function(e) {
+                                console.log(e.path[1].id);
+                                console.log(this.date);
                                 this.selectedCarId = e.path[1].id;
                                 this.onClick[Number(e.target.id)] = e.target.outerText;
                                 this.keys = Object.keys(this.onClick);
