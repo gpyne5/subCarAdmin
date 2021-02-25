@@ -60,7 +60,7 @@ xhr.onreadystatechange = function(){
                                 makeCalender: function(car) {
                                     let result = {};
                                     for(let j=0,len=this.calender.length;j<len;j++){
-                                        if(this.calender[i].y_m === this.currentDate){
+                                        if(this.calender[j].y_m === this.currentDate){
                                             if(this.calender[j].car_id === car.id){
                                                 for(let i=1,len=this.days+1;i<len;i++){
                                                     result[i] = this.calender[j]['_' + i.toString()];
@@ -163,6 +163,34 @@ xhr.onreadystatechange = function(){
                                     this.flag = false;
                                 } else {
                                     this.flag =true;
+                                }
+                            }
+                        }
+                    },
+                    'current-month': {
+                        template: `<div class="current-month"><a v-if="exist" v-on:click="beforeMonth"><<</a><h2>{{ workingMonth }}月</h2> <a v-on:click="nextMonth">>></a></div>`,
+                        data: function() {
+                            return {
+                                date: new Date(),
+                                currentDate: new Date().toISOString().slice(0,7),
+                                workingMonth: new Date().toISOString().slice(0,7),
+                                exist: false,
+                            }
+                        },
+                        methods: {
+                            nextMonth: function() {
+                                //親にデータを返す処理 workingMonthを変える処理　
+                            },
+                            beforeMonth: function() {
+                                //親にデータを返す処理 workingMonthを変える処理
+                            }
+                        },
+                        watch: {
+                            workingMonth: function(){
+                                if(this.workingMonth > this.currentDate){
+                                    this.exist = true;
+                                } else {
+                                    this.exist = false;
                                 }
                             }
                         }

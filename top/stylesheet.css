@@ -77,10 +77,14 @@ float: left;
 .selected-day {
     padding: 8px;
 }
-
+.current-month {
+    width: 100%;
+}
 
 
 h2 {
-    text-align: center;
+    float: center;
     font-size: 20px;
+    display: inline;
+    margin: 0 auto;
 }
