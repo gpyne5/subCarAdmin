@@ -23,9 +23,11 @@ xhr.onreadystatechange = function(){
                         props: ['id', 'days', 'cale'],
                         template: `<div>
                             <div>
+                            <table class="table">
                                 <tr><th></th><th v-for="i in days">{{ i }}</th></tr>
                                 <tr v-for="car in this.cars" v-bind:id="car.id"><th>{{ car.car_name }}</th>
                                 <td v-for="(reservation, key) in makeCalender(car)" v-on:mousedown="mousedown" v-bind:style="{ backgroundColor: 'white' }" v-bind:id="key" v-bind:key="key">{{ reservation }}</td></tr>
+                            </table>
                                 {{ onClick }}<br>{{ keys }}
                             </div>
                             <div class="post-form" v-show="show"　v-bind:style="[pos]">
@@ -46,6 +48,7 @@ xhr.onreadystatechange = function(){
                                 customerName: '',
                                 selectedCarId: null,
                                 date: new Date().toISOString().slice(0,7), // 2021-02 のような文字列
+                                currentDate: new Date().toISOString().slice(0,7),
                                 keys: [],
                                 onClick: {},
                                 show: false,
@@ -56,14 +59,14 @@ xhr.onreadystatechange = function(){
                                   },
                                 makeCalender: function(car) {
                                     let result = {};
-                                    //いずれif(2021-02 === current)みたいな処理を追加
                                     for(let j=0,len=this.calender.length;j<len;j++){
-                                        //console.log(car.id);
-                                        if(this.calender[j].car_id === car.id){
-                                            for(let i=1,len=this.days+1;i<len;i++){
-                                                result[i] = this.calender[j]['_' + i.toString()];
+                                        if(this.calender[i].y_m === this.currentDate){
+                                            if(this.calender[j].car_id === car.id){
+                                                for(let i=1,len=this.days+1;i<len;i++){
+                                                    result[i] = this.calender[j]['_' + i.toString()];
+                                                }
+                                                return result;
                                             }
-                                            return result;
                                         }
                                     }
                                 }
@@ -97,6 +100,7 @@ xhr.onreadystatechange = function(){
                         }
                         
                     },
+                    /*
                     'reservation-zone': {
                         props: ['cars'],
                         template: `<div id="reservation-zone">
@@ -138,6 +142,7 @@ xhr.onreadystatechange = function(){
                         }
                     
                     },
+                    */
                     'cars-create': {
                         template: `<div class="cars-create">
                         <button type="button" v-on:click="onoff">車両追加</button>

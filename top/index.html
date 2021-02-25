@@ -8,12 +8,13 @@
 </head>
 <body>
     <div id="app">
-        <h2>{{ current }}月</h2>
+        <h2 class="current-month">{{ current }}月</h2>
         <reservation-zone v-bind:cars="cars"></reservation-zone>
 
         <cars-create></cars-create>
         <car-delete v-bind:cars='cars'></car-delete>
-        <hr>
+        <br>
+        
         
             <table>
                 <car-table v-bind:id="cars" v-bind:days="days(date)" v-bind:cale="cale"></car-table>

@@ -32,19 +32,22 @@ class AdminController extends Controller
     {
         $this->validate($request, Car::$rules);
         $car = new Car;
-        $calender = new Calender;
         $form = $request->all();
         unset($form['_token']);
         //$admin->timestamps = false;
         $car->timestamps = false;
         $car->fill($form)->save();
-        $current = date('Y-m'); //要修正　$requestからcurrentDateを受け取って作成
-        $calenderSet = [
-            'car_id' => $car->id,
-            'y_m' => $current
-        ];
-        $calender->timestamps = false;
-        $calender->fill($calenderSet)->save();
+
+        for($i=0;$i<7;$i++){
+            $calender = new Calender;
+            $current = date('Y-m', strtotime("${i} month"));
+            $calenderSet = [
+                'car_id' => $car->id,
+                'y_m' => $current
+            ];
+            $calender->timestamps = false;
+            $calender->fill($calenderSet)->save();
+        }
         
     }
 
