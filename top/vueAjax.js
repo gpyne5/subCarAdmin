@@ -100,49 +100,6 @@ xhr.onreadystatechange = function(){
                         }
                         
                     },
-                    /*
-                    'reservation-zone': {
-                        props: ['cars'],
-                        template: `<div id="reservation-zone">
-                            <form id="form" method="GET">
-                                <select v-model="selectCar">
-                                    <option v-for="(car, key) in carInfo(this.cars)" v-bind:value="key">{{ car }}</option>
-                                </select>
-                                <br>
-                                <label for="customerName">お客様名：<input type="text" name="customerName" v-model="customerName"></label>
-                                
-                                <br>
-                                <input type="date" v-model="dateStart" id="dateStart">~<input type="date" v-model="dateEnd" id="dateEnd">
-                                <input type="submit" id="submit" v-on:click="onclick">
-                            </form>
-                            </div>`,
-                        data: function() {
-                            return {
-                                carInfo: function(cars) {
-                                    let result = {};
-                                    for(let i=0,len=cars.length;i<len;i++){
-                                        result[cars[i].id] = (cars[i].car_name + ' ' + cars[i].car_number);
-                                    }
-                                    return result;
-                                },
-                                selectCar: '',
-                                customerName: '',
-                                dateStart: 0,
-                                dateEnd: 0,
-                            };
-                        },
-                        methods: {
-                            onclick: function() {
-                                //admin/{id}/edit/? で更新できる
-                                xhr.open('GET', '../admin/' + encodeURIComponent(this.selectCar) + '/edit/?customerName='
-                                    + encodeURIComponent(this.customerName) + '&dateStart=' +
-                                    encodeURIComponent(this.dateStart) + '&dateEnd=' + encodeURIComponent(this.dateEnd), true);
-                                xhr.send(null);
-                            }
-                        }
-                    
-                    },
-                    */
                     'cars-create': {
                         template: `<div class="cars-create">
                         <button type="button" v-on:click="onoff">車両追加</button>
