@@ -48,7 +48,7 @@ class AdminController extends Controller
             $calender->timestamps = false;
             $calender->fill($calenderSet)->save();
         }
-        
+
     }
 
     /**

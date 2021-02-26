@@ -11,16 +11,22 @@ xhr.onreadystatechange = function(){
                     cars: data[0],
                     cale: data[1],
                     date: new Date(),
-                    current: new Date().getMonth() + 1,
+                    workingMonth: new Date().toISOString().slice(0,7),
                     days: function(date) {
                         date.setMonth(date.getMonth() + 1);
                         date.setDate(0);
                         return date.getDate();
                     }
                 },
+                methods: {
+                    changeMonth: function(e) {
+                        this.workingMonth = e;
+                        console.log(this.workingMonth);
+                    }
+                },
                 components: {
                     'car-table': {
-                        props: ['id', 'days', 'cale'],
+                        props: ['id', 'days', 'cale', 'workingmonth'],
                         template: `<div>
                             <div>
                             <table class="table">
@@ -49,6 +55,7 @@ xhr.onreadystatechange = function(){
                                 selectedCarId: null,
                                 date: new Date().toISOString().slice(0,7), // 2021-02 のような文字列
                                 currentDate: new Date().toISOString().slice(0,7),
+                                workingMonth: this.workingmonth, 
                                 keys: [],
                                 onClick: {},
                                 show: false,
@@ -59,8 +66,9 @@ xhr.onreadystatechange = function(){
                                   },
                                 makeCalender: function(car) {
                                     let result = {};
+                                    console.log(this.workingMonth);
                                     for(let j=0,len=this.calender.length;j<len;j++){
-                                        if(this.calender[j].y_m === this.currentDate){
+                                        if(this.calender[j].y_m === this.workingMonth){
                                             if(this.calender[j].car_id === car.id){
                                                 for(let i=1,len=this.days+1;i<len;i++){
                                                     result[i] = this.calender[j]['_' + i.toString()];
@@ -180,6 +188,11 @@ xhr.onreadystatechange = function(){
                         methods: {
                             nextMonth: function() {
                                 //親にデータを返す処理 workingMonthを変える処理　
+                                let date = this.date; //元データを変えたくないので新たに変数を宣言
+                                date.setMonth(date.getMonth() + 1);
+                                this.workingMonth = date.toISOString().slice(0,7);
+                                this.$emit('change-month', this.workingMonth);
+                                //console.log(this.workingMonth);
                             },
                             beforeMonth: function() {
                                 //親にデータを返す処理 workingMonthを変える処理
