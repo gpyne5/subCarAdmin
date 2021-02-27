@@ -100,7 +100,7 @@ xhr.onreadystatechange = function(){
                             click: function() {
                                 //admin/{id}/edit/? で更新できる
                                 xhr.open('GET', '../admin/' + encodeURIComponent(this.selectedCarId) + '/edit/?customerName='
-                                    + encodeURIComponent(this.customerName) + '&currentMonth=' + encodeURIComponent(this.date) + '&dateStart=' +
+                                    + encodeURIComponent(this.customerName) + '&currentMonth=' + encodeURIComponent(this.workingMonth) + '&dateStart=' +
                                     encodeURIComponent(this.keys[0]) + '&dateEnd=' + encodeURIComponent(this.keys[1]), true);
                                 xhr.send(null);
                             },
