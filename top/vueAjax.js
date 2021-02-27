@@ -77,7 +77,6 @@ xhr.onreadystatechange = function(){
                                         }
                                     }
                                 }
-                                    
                             };
                         },
                         methods: {
@@ -104,14 +103,12 @@ xhr.onreadystatechange = function(){
                                     encodeURIComponent(this.keys[0]) + '&dateEnd=' + encodeURIComponent(this.keys[1]), true);
                                 xhr.send(null);
                             },
-                            
                         },
                         watch: {
                             workingmonth: function() {
                                 this.workingMonth = this.workingmonth; //親から渡されたpropsは変化しているのでwatchで観測したら更新するようにしている
                             }
                         }
-                        
                     },
                     'cars-create': {
                         template: `<div class="cars-create">
@@ -145,7 +142,6 @@ xhr.onreadystatechange = function(){
                                 }
                             }
                         }
-                        
                     },
                     'car-delete': {
                         props: ['cars'],
@@ -187,20 +183,22 @@ xhr.onreadystatechange = function(){
                                 date: new Date(),
                                 currentDate: new Date().toISOString().slice(0,7),
                                 workingMonth: new Date().toISOString().slice(0,7),
+                                calDate: new Date(),
                                 exist: false,
                             }
                         },
                         methods: {
                             nextMonth: function() {
                                 //親にデータを返す処理 workingMonthを変える処理　
-                                let date = this.date; //元データを変えたくないので新たに変数を宣言
-                                date.setMonth(date.getMonth() + 1);
-                                this.workingMonth = date.toISOString().slice(0,7);
+                                this.calDate.setMonth(this.calDate.getMonth() + 1);
+                                this.workingMonth = this.calDate.toISOString().slice(0,7);
                                 this.$emit('change-month', this.workingMonth);
-                                //console.log(this.workingMonth);
                             },
                             beforeMonth: function() {
                                 //親にデータを返す処理 workingMonthを変える処理
+                                this.calDate.setMonth(this.calDate.getMonth() - 1);
+                                this.workingMonth = this.calDate.toISOString().slice(0,7);
+                                this.$emit('change-month', this.workingMonth);
                             }
                         },
                         watch: {
