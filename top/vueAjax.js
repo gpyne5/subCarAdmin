@@ -21,7 +21,6 @@ xhr.onreadystatechange = function(){
                 methods: {
                     changeMonth: function(e) {
                         this.workingMonth = e;
-                        console.log(this.workingMonth);
                     }
                 },
                 components: {
@@ -34,7 +33,7 @@ xhr.onreadystatechange = function(){
                                 <tr v-for="car in this.cars" v-bind:id="car.id"><th>{{ car.car_name }}</th>
                                 <td v-for="(reservation, key) in makeCalender(car)" v-on:mousedown="mousedown" v-bind:style="{ backgroundColor: 'white' }" v-bind:id="key" v-bind:key="key">{{ reservation }}</td></tr>
                             </table>
-                                {{ onClick }}<br>{{ keys }}
+                                {{ onClick }}<br>{{ keys }}<br>{{ workingMonth }}:{{this.workingmonth}}
                             </div>
                             <div class="post-form" v-show="show"　v-bind:style="[pos]">
                                 <form method="GET">
@@ -104,6 +103,12 @@ xhr.onreadystatechange = function(){
                                     + encodeURIComponent(this.customerName) + '&currentMonth=' + encodeURIComponent(this.date) + '&dateStart=' +
                                     encodeURIComponent(this.keys[0]) + '&dateEnd=' + encodeURIComponent(this.keys[1]), true);
                                 xhr.send(null);
+                            },
+                            
+                        },
+                        watch: {
+                            workingmonth: function() {
+                                this.workingMonth = this.workingmonth; //親から渡されたpropsは変化しているのでwatchで観測したら更新するようにしている
                             }
                         }
                         

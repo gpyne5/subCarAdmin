@@ -17,7 +17,7 @@
         
         
             <table>
-                <car-table v-bind:id="cars" v-bind:days="days(date)" v-bind:cale="cale" v-bind:workingmonth="workingMonth"></car-table>
+                <car-table v-bind:id="cars" v-bind:days="days(date)" v-bind:cale="cale" v-bind:workingmonth="workingMonth" v-on:change-month="changeMonth"></car-table>
             </table>
     </div>
 
