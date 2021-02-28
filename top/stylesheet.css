@@ -32,13 +32,13 @@ border-bottom-style: solid;
 }
 
 .create {
-color:white;
+color:gray;
 padding: 10px;
 position: relative;
 border: solid 1px #000;
 height: 180px;
 width: 200px;
-background-color: rgba(0, 0, 0, 0.5);
+background-color: rgba(0, 123, 255, 0.2);
 }
 .delete {
 position: relative;
@@ -46,7 +46,7 @@ padding: 10px;
 border: solid 1px #000;
 height: 80px;
 width: 150px;
-background-color: rgba(0, 0, 0, 0.5);
+background-color: rgba(0, 123, 255, 0.2);
 }
 .car-delete {
 padding: 10px;
@@ -87,4 +87,8 @@ h2 {
     font-size: 20px;
     display: inline;
     margin: 0 auto;
+}
+
+.td01:hover {
+    background-color: rgba(0,123,255,0.6);
 }

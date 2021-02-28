@@ -18,6 +18,20 @@ class AdminController extends Controller
     {
         $cars = Car::all();
         $calender = Calender::all();
+        /*
+        $sevenMonthAgo = date('Y-m', strtotime("8 month"));
+        for ($i = 0, $len = count($calender);$i<$len;$i++){
+            if($calender[$i]->y_m === $sevenMonthAgo){
+                //
+            } else {
+                $newCalender = new Calender;
+                $newCalender->car_id = $calender[$i]->car_id;
+                $newCalender->y_m = $sevenMonthAgo;
+                $newCalender->timestamps = false;
+                $newCalender->save();
+            }
+        }
+        */
         $items = [$cars, $calender];
         return $items;
 
@@ -34,7 +48,6 @@ class AdminController extends Controller
         $car = new Car;
         $form = $request->all();
         unset($form['_token']);
-        //$admin->timestamps = false;
         $car->timestamps = false;
         $car->fill($form)->save();
 

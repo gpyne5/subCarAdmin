@@ -31,7 +31,7 @@ xhr.onreadystatechange = function(){
                             <table class="table">
                                 <tr><th></th><th v-for="i in days">{{ i }}</th></tr>
                                 <tr v-for="car in this.cars" v-bind:id="car.id"><th>{{ car.car_name }}</th>
-                                <td v-for="(reservation, key) in makeCalender(car)" v-on:mousedown="mousedown" v-bind:style="{ backgroundColor: 'white' }" v-bind:id="key" v-bind:key="key">{{ reservation }}</td></tr>
+                                <td v-for="(reservation, key) in makeCalender(car)" v-on:mousedown="mousedown" v-bind:id="key" v-bind:key="key" class="td01">{{ reservation }}</td></tr>
                             </table>
                                 {{ onClick }}<br>{{ keys }}<br>{{ workingMonth }}:{{this.workingmonth}}
                             </div>
@@ -81,12 +81,14 @@ xhr.onreadystatechange = function(){
                         },
                         methods: {
                             mousedown: function(e) {
-                                console.log(e.path[1].id);
-                                console.log(this.date);
+                                e.target.style.backgroundColor = 'rgba(0,123,255,0.2)';
+                                console.log(e)
                                 this.selectedCarId = e.path[1].id;
                                 this.onClick[Number(e.target.id)] = e.target.outerText;
                                 this.keys = Object.keys(this.onClick);
                                 if(this.keys.length === 2){
+                                    let second = e.target;
+                                    console.log(second);
                                     this.keys.sort();
                                     this.show = true;
                                     this.pos = {
@@ -95,6 +97,9 @@ xhr.onreadystatechange = function(){
                                         position: 'absolute'
                                     };
                                 }
+                                if(this.keys.length === 3){
+                                    this.keys.splice(1, 1);
+                                };
                             },
                             click: function() {
                                 //admin/{id}/edit/? で更新できる
@@ -112,7 +117,7 @@ xhr.onreadystatechange = function(){
                     },
                     'cars-create': {
                         template: `<div class="cars-create">
-                        <button type="button" v-on:click="onoff">車両追加</button>
+                        <button type="button" v-on:click="onoff" class="btn btn-outline-primary">車両追加</button>
                         <div v-show="flag" class="create">
                         <form method="GET">
                             車種名：<input name="car_name" v-model="carName" type="text"><br>
@@ -146,7 +151,7 @@ xhr.onreadystatechange = function(){
                     'car-delete': {
                         props: ['cars'],
                         template: `<div class="car-delete">
-                            <button type="button" v-on:click="onoff">車両削除</button>
+                            <button type="button" v-on:click="onoff" class="btn btn-outline-primary">車両削除</button>
                             <div v-show="flag" class="delete">
                             <form method="GET">
                                 <select v-model="deleteCar">
@@ -177,7 +182,7 @@ xhr.onreadystatechange = function(){
                         }
                     },
                     'current-month': {
-                        template: `<div class="current-month"><a v-if="exist" v-on:click="beforeMonth"><<</a><h2>{{ workingMonth }}月</h2> <a v-on:click="nextMonth">>></a></div>`,
+                        template: `<div class="current-month"><a href="javascript:void(0)" v-if="exist" v-on:click="beforeMonth"><<</a><h2>{{ workingMonth }}月</h2> <a href="javascript:void(0)" v-on:click="nextMonth">>></a></div>`,
                         data: function() {
                             return {
                                 date: new Date(),
