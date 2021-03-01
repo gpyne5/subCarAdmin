@@ -18,12 +18,24 @@ class AdminController extends Controller
     {
         $cars = Car::all();
         $calender = Calender::all();
+        //もし８月先のレコードが存在しなければ作成したい
         /*
-        $sevenMonthAgo = date('Y-m', strtotime("8 month"));
-        for ($i = 0, $len = count($calender);$i<$len;$i++){
-            if($calender[$i]->y_m === $sevenMonthAgo){
-                //
-            } else {
+        $today = date('j');
+        $sevenMonthAgo = date('Y-m', strtotime("7 month"));
+        $result = [];
+        if ($today === "1"){
+                for ($i = 0, $len = count($calender); $i <$len; $i ++){
+                    if(empty($calender[$i]->y_m)){
+                        $result[] = "true";
+                    } else {
+                        $result[] ="false";
+                    }
+            }
+        }
+
+        
+        
+         else {
                 $newCalender = new Calender;
                 $newCalender->car_id = $calender[$i]->car_id;
                 $newCalender->y_m = $sevenMonthAgo;

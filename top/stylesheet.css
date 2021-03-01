@@ -79,13 +79,14 @@ float: left;
 }
 .current-month {
     width: 100%;
+    text-align: center;
 }
 
 
 h2 {
-    float: center;
+    text-align: center;
     font-size: 20px;
-    display: inline;
+    display: inline-table;
     margin: 0 auto;
 }
 
