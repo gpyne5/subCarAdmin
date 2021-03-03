@@ -56,6 +56,20 @@ class AdminController extends Controller
      */
     public function create(Request $request)
     {
+      //  
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function store(Request $request)
+    {
+        //header('Content-Type: application/json; charset=utf-8');
+        //header("Access-Control-Allow-Origin: *");  //CORS
+        //header("Access-Control-Allow-Headers: Origin, X-Requested-With");
         $this->validate($request, Car::$rules);
         $car = new Car;
         $form = $request->all();
@@ -73,18 +87,7 @@ class AdminController extends Controller
             $calender->timestamps = false;
             $calender->fill($calenderSet)->save();
         }
-
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
+        return response()->json($car);
     }
 
     /**
@@ -95,8 +98,7 @@ class AdminController extends Controller
      */
     public function show($id)
     {
-        $car = Car::find($id)->delete();
-        $calender = Calender::where('car_id',$id)->get()->each->delete();
+        //
     }
 
     /**
@@ -108,6 +110,18 @@ class AdminController extends Controller
     public function edit($id, Request $request)
     {
         
+        //
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function update(Request $request, $id)
+    {
         $start = $request->dateStart;
         if(isset($request->dateEnd)){
             $end = $request->dateEnd;
@@ -149,18 +163,6 @@ class AdminController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
      * Remove the specified resource from storage.
      *
      * @param  int  $id
@@ -168,6 +170,7 @@ class AdminController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $car = Car::find($id)->delete();
+        $calender = Calender::where('car_id',$id)->get()->each->delete();
     }
 }

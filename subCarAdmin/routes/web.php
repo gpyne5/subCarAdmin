@@ -18,4 +18,10 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::resource('admin', AdminController::class);
+//Route::resource('admin', AdminController::class);
+Route::POST('admin', [AdminController::class, 'store']);
+Route::GET('admin', [AdminController::class, 'index']);
+
+Route::put('admin/{admin}', [AdminController::class, 'update']);
+Route::delete('admin/{admin}', [AdminController::class, 'destroy']);
+    //->middleware(Cors::class);
