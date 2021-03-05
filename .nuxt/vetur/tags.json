@@ -2,6 +2,9 @@
   "CarsTable": {
     "description": "Auto imported from components/CarsTable.vue"
   },
+  "CurrenMonth": {
+    "description": "Auto imported from components/CurrenMonth.vue"
+  },
   "Logo": {
     "description": "Auto imported from components/Logo.vue"
   }

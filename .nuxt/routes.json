@@ -3,6 +3,7 @@
     "name": "index",
     "path": "/",
     "component": "/var/www/adminboard/pages/index.vue",
-    "chunkName": "pages/index"
+    "chunkName": "pages/index",
+    "_name": "_23bbd0e0"
   }
 ]
