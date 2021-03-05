@@ -1,4 +1,7 @@
 {
+  "CarsTable": {
+    "description": "Auto imported from components/CarsTable.vue"
+  },
   "Logo": {
     "description": "Auto imported from components/Logo.vue"
   }
